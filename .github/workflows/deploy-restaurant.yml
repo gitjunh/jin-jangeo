@@ -6,6 +6,7 @@ on:
     paths:
       - 'restaurant/**'
       - 'shared/**'
+      - 'res2/**'
       - '.github/workflows/deploy-restaurant.yml'
   workflow_dispatch:
 
@@ -25,6 +26,11 @@ jobs:
           node-version: 22
           cache: npm
           cache-dependency-path: restaurant/package-lock.json
+
+      - name: Sync media from res2
+        run: |
+          cp res2/*.webp res2/*.mp4 restaurant/public/media/
+          echo "Synced $(ls res2 | wc -l) files from res2"
 
       - name: Build restaurant
         working-directory: restaurant
@@ -47,6 +53,14 @@ jobs:
             echo "OK data/$f ($(wc -c < "$fpath") bytes)"
           done
 
+      - name: Verify media before deploy
+        run: |
+          for f in KakaoTalk_20260615_151043674_05.webp KakaoTalk_20260615_143517655-web.mp4 menu-board.png; do
+            fpath="restaurant/dist/media/$f"
+            test -s "$fpath" || (echo "::error::missing media/$f" && exit 1)
+            echo "OK media/$f ($(wc -c < "$fpath") bytes)"
+          done
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -54,6 +68,3 @@ jobs:
           publish_dir: restaurant/dist
           publish_branch: gh-pages
           keep_files: true
-          # media는 어드민 업로드 보존 (data는 위 merge 후 항상 배포)
-          exclude_assets: |
-            media
