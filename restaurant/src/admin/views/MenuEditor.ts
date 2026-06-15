@@ -6,6 +6,8 @@ import { isLocalDevMode, saveLocalMenu } from '../localData';
 import { publicUrl } from '../../lib/assets';
 import { openPhotoPicker } from './PhotoPicker';
 
+const BOARD_PENDING_KEY = '__menuBoard__';
+
 export interface MenuEditorState {
   menu: MenuData;
   menuSha: string;
@@ -32,9 +34,26 @@ export function renderMenuEditor(
 
   const render = () => {
     const ts = state.menu.tableSetting;
+    const boardPath = state.menu.menuBoardImage;
+    const boardPending = state.pendingImages.has(BOARD_PENDING_KEY);
+    const boardImgSrc = boardPending ? '' : publicUrl(boardPath);
+    const boardImg = boardPending
+      ? `<img src="" alt="" class="admin-board__thumb" data-pending="${BOARD_PENDING_KEY}" />`
+      : `<img src="${boardImgSrc}" alt="메뉴판" class="admin-board__thumb" />`;
+    const boardPendingLabel = boardPending ? ' (새 사진)' : '';
+
     let html = `
       <h2 class="admin-section__title">메뉴 관리</h2>
       <p class="admin-note">${ts.label}: 대인 ${formatPrice(ts.adult)} / 소인 ${formatPrice(ts.child)}</p>
+      <div class="admin-board">
+        <h3 class="admin-board__label">메뉴판 전체 보기</h3>
+        <div class="admin-board__row">
+          ${boardImg}
+          <button type="button" class="admin-btn admin-btn--small" data-photo-board>
+            메뉴판 사진 바꾸기${boardPendingLabel}
+          </button>
+        </div>
+      </div>
     `;
 
     for (const cat of state.menu.categories) {
@@ -54,6 +73,33 @@ export function renderMenuEditor(
     }
 
     el.innerHTML = html;
+
+    el.querySelector<HTMLButtonElement>('[data-photo-board]')?.addEventListener('click', (e) => {
+      const btn = e.currentTarget as HTMLButtonElement;
+      openPhotoPicker({
+        images: mediaPool,
+        onSelectExisting: (path) => {
+          state.pendingImages.delete(BOARD_PENDING_KEY);
+          state.menu.menuBoardImage = path;
+          onChange();
+          render();
+        },
+        onSelectFile: async (file) => {
+          btn.textContent = '최적화 중…';
+          try {
+            const { blob } = await optimizeImage(file);
+            const path = `media/menu-board-${Date.now()}.webp`;
+            state.pendingImages.set(BOARD_PENDING_KEY, { blob, path });
+            state.menu.menuBoardImage = path;
+            onChange();
+            render();
+          } catch (err) {
+            alert(err instanceof Error ? err.message : '이미지 변환 실패');
+            btn.textContent = '메뉴판 사진 바꾸기';
+          }
+        },
+      });
+    });
 
     el.querySelectorAll<HTMLInputElement>('[data-field]').forEach((input) => {
       input.addEventListener('input', () => {

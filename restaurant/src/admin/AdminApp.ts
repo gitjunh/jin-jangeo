@@ -52,7 +52,9 @@ async function bootApp(root: HTMLElement): Promise<void> {
   let storeState: StoreEditorState;
   let galleryState: GalleryEditorState;
   let mediaPool: string[];
-  let dirty = false;
+  let menuDirty = false;
+  let galleryDirty = false;
+  let storeDirty = false;
 
   try {
     [menuState, storeState, galleryState] = await Promise.all([
@@ -80,9 +82,9 @@ async function bootApp(root: HTMLElement): Promise<void> {
   const content = document.createElement('div');
   content.className = 'admin-content';
 
-  const menuEl = renderMenuEditor(menuState, mediaPool, () => { dirty = true; });
-  const signatureEl = renderSignatureEditor(galleryState, mediaPool, () => { dirty = true; });
-  const storeEl = renderStoreEditor(storeState, () => { dirty = true; });
+  const menuEl = renderMenuEditor(menuState, mediaPool, () => { menuDirty = true; });
+  const signatureEl = renderSignatureEditor(galleryState, mediaPool, () => { galleryDirty = true; });
+  const storeEl = renderStoreEditor(storeState, () => { storeDirty = true; });
   signatureEl.hidden = true;
   storeEl.hidden = true;
 
@@ -103,10 +105,18 @@ async function bootApp(root: HTMLElement): Promise<void> {
     saveBtn.textContent = '저장 중…';
     msg.hidden = true;
     try {
-      await saveMenuState(menuState);
-      await saveGalleryState(galleryState);
-      await saveStoreState(storeState);
-      dirty = false;
+      if (!menuDirty && !galleryDirty && !storeDirty) {
+        msg.textContent = '변경된 내용이 없습니다.';
+        msg.className = 'admin-save-bar__msg';
+        msg.hidden = false;
+        return;
+      }
+      if (menuDirty) await saveMenuState(menuState);
+      if (galleryDirty) await saveGalleryState(galleryState);
+      if (storeDirty) await saveStoreState(storeState);
+      menuDirty = false;
+      galleryDirty = false;
+      storeDirty = false;
       msg.textContent = isLocalDevMode()
         ? '저장됐어요! 홈페이지(/)를 새로고침하면 바로 보입니다. (로컬 테스트)'
         : '저장됐어요! 홈페이지에서 새로고침하면 바로 보입니다.';
@@ -143,7 +153,7 @@ async function bootApp(root: HTMLElement): Promise<void> {
   root.append(shell);
 
   window.addEventListener('beforeunload', (e) => {
-    if (dirty) {
+    if (menuDirty || galleryDirty || storeDirty) {
       e.preventDefault();
     }
   });

@@ -40,3 +40,7 @@ jobs:
           publish_dir: restaurant/dist
           publish_branch: gh-pages
           keep_files: true
+          # 어드민이 gh-pages에서 직접 수정하는 data·media는 배포로 덮어쓰지 않음
+          exclude_assets: |
+            data
+            media
