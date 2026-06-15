@@ -3,6 +3,7 @@ import { formatPrice } from '../../types';
 import { optimizeImage } from '@shared/media';
 import { getFile, loadJsonFromGh, putBinary, putJson } from '../github';
 import { isLocalDevMode, saveLocalMenu } from '../localData';
+import { publicUrl } from '../../lib/assets';
 
 export interface MenuEditorState {
   menu: MenuData;
@@ -12,7 +13,7 @@ export interface MenuEditorState {
 
 export async function loadMenuState(): Promise<MenuEditorState> {
   if (isLocalDevMode()) {
-    const res = await fetch('/data/menu.json');
+    const res = await fetch(publicUrl('/data/menu.json'));
     const data = (await res.json()) as MenuData;
     return { menu: data, menuSha: 'local', pendingImages: new Map() };
   }
@@ -132,7 +133,7 @@ export function renderMenuEditor(
 
 function renderItem(cat: MenuCategory, item: MenuItem, state: MenuEditorState): string {
   const pending = state.pendingImages.get(item.id);
-  const imgSrc = pending ? '' : (item.image ? `/${item.image}` : '');
+  const imgSrc = pending ? '' : (item.image ? publicUrl(item.image) : '');
   const img = pending
     ? `<img src="" alt="" class="admin-item__thumb" data-pending="${item.id}" />`
     : item.image

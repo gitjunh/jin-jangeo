@@ -1,3 +1,5 @@
+import { publicUrl } from '../lib/assets';
+
 export function renderSignatureScroll(images: string[]): HTMLElement {
   const section = document.createElement('section');
   section.className = 'section signature';
@@ -6,7 +8,7 @@ export function renderSignatureScroll(images: string[]): HTMLElement {
     <div class="signature__scroll" tabindex="0">
       ${images.map((src) => `
         <figure class="signature__card">
-          <img src="/${src}" alt="장어 요리" loading="lazy" decoding="async" />
+          <img src="${publicUrl(src)}" alt="장어 요리" loading="lazy" decoding="async" />
         </figure>
       `).join('')}
     </div>

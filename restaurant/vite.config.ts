@@ -2,8 +2,10 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const base = process.env.GITHUB_ACTIONS === 'true' ? '/jin-jangeo/' : '/';
+
 export default defineConfig({
-  base: '/',
+  base,
   server: {
     port: 5173,
     strictPort: true,
@@ -30,7 +32,7 @@ export default defineConfig({
         theme_color: '#0f0f0f',
         background_color: '#0f0f0f',
         display: 'standalone',
-        start_url: '/',
+        start_url: base,
         lang: 'ko',
         icons: [
           { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
@@ -43,7 +45,7 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
         runtimeCaching: [
           {
-            urlPattern: /\/data\/.*\.json$/,
+            urlPattern: new RegExp(`${base.replace(/\//g, '\\/')}data\\/.*\\.json$`),
             handler: 'NetworkOnly',
           },
         ],

@@ -1,5 +1,6 @@
 import type { MenuData } from '../types';
 import { formatPrice } from '../types';
+import { publicUrl } from '../lib/assets';
 
 export function renderMenuSection(
   menu: MenuData,
@@ -13,7 +14,7 @@ export function renderMenuSection(
   let html = `
     <h2 class="section__title">메뉴</h2>
     <p class="menu__note">${ts.label} — 대인 ${formatPrice(ts.adult)} / 소인 ${formatPrice(ts.child)}</p>
-    <button type="button" class="menu__board-btn" data-board="/${menu.menuBoardImage}">
+    <button type="button" class="menu__board-btn" data-board="${publicUrl(menu.menuBoardImage)}">
       📋 메뉴판 전체 보기
     </button>
   `;
@@ -27,7 +28,7 @@ export function renderMenuSection(
     for (const item of cat.items) {
       const featured = item.featured ? ' menu__item--featured' : '';
       const img = item.image
-        ? `<img class="menu__item-img" src="/${item.image}" alt="${item.name}" loading="lazy" data-lightbox="/${item.image}" />`
+        ? `<img class="menu__item-img" src="${publicUrl(item.image)}" alt="${item.name}" loading="lazy" data-lightbox="${publicUrl(item.image)}" />`
         : '';
       html += `
         <article class="menu__item${featured}">

@@ -1,3 +1,5 @@
+import { publicUrl } from '../lib/assets';
+
 export function renderGalleryGrid(
   images: string[],
   onImageClick: (src: string) => void,
@@ -9,8 +11,8 @@ export function renderGalleryGrid(
     <h2 class="section__title">갤러리</h2>
     <div class="gallery__grid">
       ${images.map((src) => `
-        <button type="button" class="gallery__item" data-src="/${src}" aria-label="사진 크게 보기">
-          <img src="/${src}" alt="매장 음식 사진" loading="lazy" decoding="async" />
+        <button type="button" class="gallery__item" data-src="${publicUrl(src)}" aria-label="사진 크게 보기">
+          <img src="${publicUrl(src)}" alt="매장 음식 사진" loading="lazy" decoding="async" />
         </button>
       `).join('')}
     </div>

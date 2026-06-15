@@ -1,5 +1,6 @@
 import type { RestaurantInfo } from '../types';
 import { isClosedToday } from '../types';
+import { publicUrl } from '../lib/assets';
 
 export function renderHero(
   restaurant: RestaurantInfo,
@@ -18,7 +19,7 @@ export function renderHero(
   section.innerHTML = `
     <div class="hero__video-wrap">
       <video class="hero__video" muted playsinline autoplay loop preload="metadata"
-        poster="/${poster}"></video>
+        poster="${publicUrl(poster)}"></video>
       <div class="hero__overlay"></div>
     </div>
     <div class="hero__content">
@@ -35,8 +36,8 @@ export function renderHero(
 
   const play = (i: number) => {
     const v = sources[i];
-    video.src = `/${v.src}`;
-    video.poster = `/${v.poster}`;
+    video.src = publicUrl(v.src);
+    video.poster = publicUrl(v.poster);
     void video.play().catch(() => {});
   };
 

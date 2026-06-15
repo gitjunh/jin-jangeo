@@ -1,6 +1,7 @@
 import type { RestaurantInfo } from '../../types';
 import { loadJsonFromGh, putJson } from '../github';
 import { isLocalDevMode, saveLocalRestaurant } from '../localData';
+import { publicUrl } from '../../lib/assets';
 
 export interface StoreEditorState {
   info: RestaurantInfo;
@@ -9,7 +10,7 @@ export interface StoreEditorState {
 
 export async function loadStoreState(): Promise<StoreEditorState> {
   if (isLocalDevMode()) {
-    const res = await fetch('/data/restaurant.json');
+    const res = await fetch(publicUrl('/data/restaurant.json'));
     const data = (await res.json()) as RestaurantInfo;
     return { info: data, sha: 'local' };
   }
