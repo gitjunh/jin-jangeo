@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -33,6 +35,15 @@ jobs:
           VITE_GITHUB_BRANCH: gh-pages
         run: npm ci && npm run build
 
+      - name: Merge admin data from gh-pages
+        run: |
+          git fetch origin gh-pages --depth=1 2>/dev/null || true
+          for f in menu.json gallery.json restaurant.json videos.json; do
+            if git show origin/gh-pages:data/"$f" > restaurant/dist/data/"$f" 2>/dev/null; then
+              echo "Using gh-pages data/$f"
+            fi
+          done
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
@@ -40,7 +51,6 @@ jobs:
           publish_dir: restaurant/dist
           publish_branch: gh-pages
           keep_files: true
-          # 어드민이 gh-pages에서 직접 수정하는 data·media는 배포로 덮어쓰지 않음
+          # media는 어드민 업로드 보존 (data는 위 merge 후 항상 배포)
           exclude_assets: |
-            data
             media
