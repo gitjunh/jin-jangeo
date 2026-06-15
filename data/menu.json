@@ -15,14 +15,14 @@
           "id": "eel-salt",
           "name": "소금 장어구이",
           "price": 28000,
-          "image": "media/KakaoTalk_20260615_151043674_05.webp",
+          "image": "media/KakaoTalk_20260615_151043674_08.webp",
           "featured": true
         },
         {
           "id": "eel-seasoned",
           "name": "양념 장어구이",
           "price": 30000,
-          "image": "media/KakaoTalk_20260615_151043674_03.webp",
+          "image": "media/KakaoTalk_20260615_151043674_10.webp",
           "featured": true
         }
       ]
@@ -35,7 +35,7 @@
           "id": "ribs",
           "name": "갈비살(미국산) 150g",
           "price": 17000,
-          "image": "media/KakaoTalk_20260615_151043674_02.webp"
+          "image": "media/KakaoTalk_20260615_151043674_07.webp"
         },
         {
           "id": "eel-soup",
@@ -79,12 +79,42 @@
       "id": "drinks",
       "name": "주류",
       "items": [
-        { "id": "soju", "name": "소주", "price": 4000, "image": null },
-        { "id": "beer", "name": "맥주", "price": 5000, "image": null },
-        { "id": "bokbunja", "name": "복분자", "price": 13000, "image": null },
-        { "id": "cheongha", "name": "청하", "price": 6000, "image": null },
-        { "id": "baekseju", "name": "백세주", "price": 8000, "image": null },
-        { "id": "soft-drink", "name": "음료수", "price": 2000, "image": null }
+        {
+          "id": "soju",
+          "name": "소주",
+          "price": 4000,
+          "image": null
+        },
+        {
+          "id": "beer",
+          "name": "맥주",
+          "price": 5000,
+          "image": null
+        },
+        {
+          "id": "bokbunja",
+          "name": "복분자",
+          "price": 13000,
+          "image": null
+        },
+        {
+          "id": "cheongha",
+          "name": "청하",
+          "price": 6000,
+          "image": null
+        },
+        {
+          "id": "baekseju",
+          "name": "백세주",
+          "price": 8000,
+          "image": null
+        },
+        {
+          "id": "soft-drink",
+          "name": "음료수",
+          "price": 2000,
+          "image": null
+        }
       ]
     }
   ]
