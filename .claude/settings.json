@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "sonnet",
+  "env": {
+    "MAX_THINKING_TOKENS": "10000",
+    "AUTOCOMPACT": "50",
+    "PROJECT_TYPE": "static-pwa",
+    "LANGUAGE": "typescript",
+    "PROJECT_NAME": "장어명가진"
+  },
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "소스 코드가 수정되었습니다. media-opt 또는 restaurant 앱 폴더 기준으로 CLAUDE.md·README와 일치하는지 확인하세요. 정적 PWA이므로 불필요한 API·인증·서버 업로드 코드는 추가하지 마세요."
+          }
+        ]
+      }
+    ],
+    "ConfigChange": [
+      {
+        "matcher": "package\\.json",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "package.json이 변경되었습니다. npm install을 실행하고 빌드(npm run build)가 통과하는지 확인하세요."
+          }
+        ]
+      },
+      {
+        "matcher": "\\.github/workflows/.*\\.ya?ml",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "GitHub Actions 워크플로가 변경되었습니다. 트리거(branch/push), Node 버전, build 출력 경로(dist), GitHub Pages 배포 설정이 올바른지 확인하세요."
+          }
+        ]
+      }
+    ]
+  }
+}

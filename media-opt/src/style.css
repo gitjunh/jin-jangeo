@@ -1,0 +1,216 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #1a1a2e;
+  --surface: #16213e;
+  --accent: #e94560;
+  --accent-hover: #ff6b6b;
+  --text: #eaeaea;
+  --text-muted: #a0a0b0;
+  --border: #2a2a4a;
+  --success: #4ecca3;
+  --error: #ff6b6b;
+  --radius: 12px;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1rem 1rem 2rem;
+}
+
+.header {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.header__title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.header__sub {
+  margin: 0.25rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dropzone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 2rem 1rem;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.dropzone--active {
+  border-color: var(--accent);
+  background: rgba(233, 69, 96, 0.08);
+}
+
+.dropzone__title {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.dropzone__hint {
+  margin: 0 0 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn--secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  margin-top: 0.75rem;
+}
+
+.btn--secondary:hover {
+  border-color: var(--accent);
+}
+
+.job-list__title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.job-list__empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.job-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.job-card--done {
+  border-color: var(--success);
+}
+
+.job-card--error {
+  border-color: var(--error);
+}
+
+.job-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.job-card__kind {
+  font-size: 0.7rem;
+  background: var(--border);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.job-card__name {
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.job-card__meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.job-card__saved {
+  color: var(--success);
+}
+
+.job-card__error {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--error);
+}
+
+.progress {
+  margin-top: 0.75rem;
+}
+
+.progress__label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.progress__track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress__bar {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+
+.progress__pct {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+  text-align: right;
+}
+
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer p {
+  margin: 0;
+}

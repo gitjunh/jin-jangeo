@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "description": "a 장어구이 정적 PWA — 팀 가독성용 훅 정의 (실제 로딩은 settings.json hooks 블록)",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "action": "코드 수정 시 data/·public/·CLAUDE.md 동기화 확인"
+      }
+    ],
+    "ConfigChange": [
+      {
+        "matcher": "package.json",
+        "action": "npm install 및 npm run build 확인"
+      },
+      {
+        "matcher": ".github/workflows/*.yml",
+        "action": "GitHub Pages 배포 워크플로 검증"
+      }
+    ]
+  }
+}
