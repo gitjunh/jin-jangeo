@@ -407,3 +407,51 @@ body {
 .photo-sheet__cancel {
   margin-top: 0;
 }
+
+/* Signature editor */
+.admin-sig-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-sig-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+}
+
+.admin-sig-item__num {
+  flex-shrink: 0;
+  width: 22px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.admin-sig-item__thumb {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.admin-sig-item__actions {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.admin-sig-item__actions .admin-btn--ghost {
+  width: auto;
+  margin-top: 0;
+  min-width: 44px;
+  padding: 10px 8px;
+}

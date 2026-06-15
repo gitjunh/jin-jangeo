@@ -1,8 +1,10 @@
 import type { RestaurantInfo } from '../types';
 import type { MenuData } from '../types';
+import type { GalleryData } from '../types';
 
 const KEY_MENU = 'jin_dev_menu';
 const KEY_RESTAURANT = 'jin_dev_restaurant';
+const KEY_GALLERY = 'jin_dev_gallery';
 
 export function isLocalDevMode(): boolean {
   return import.meta.env.DEV && sessionStorage.getItem('jin_local_dev') === '1';
@@ -20,6 +22,10 @@ export function saveLocalRestaurant(info: RestaurantInfo): void {
   localStorage.setItem(KEY_RESTAURANT, JSON.stringify(info));
 }
 
+export function saveLocalGallery(gallery: GalleryData): void {
+  localStorage.setItem(KEY_GALLERY, JSON.stringify(gallery));
+}
+
 export function readLocalMenu(): MenuData | null {
   const raw = localStorage.getItem(KEY_MENU);
   return raw ? (JSON.parse(raw) as MenuData) : null;
@@ -30,9 +36,15 @@ export function readLocalRestaurant(): RestaurantInfo | null {
   return raw ? (JSON.parse(raw) as RestaurantInfo) : null;
 }
 
+export function readLocalGallery(): GalleryData | null {
+  const raw = localStorage.getItem(KEY_GALLERY);
+  return raw ? (JSON.parse(raw) as GalleryData) : null;
+}
+
 /** 공개 페이지용 — 로컬 어드민 저장분 */
 export function readLocalJson<T>(path: string): T | null {
   if (path.includes('menu.json')) return readLocalMenu() as T | null;
   if (path.includes('restaurant.json')) return readLocalRestaurant() as T | null;
+  if (path.includes('gallery.json')) return readLocalGallery() as T | null;
   return null;
 }

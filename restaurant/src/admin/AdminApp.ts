@@ -16,10 +16,14 @@ import {
   saveStoreState,
   type StoreEditorState,
 } from './views/StoreEditor';
+import {
+  loadGalleryState,
+  renderSignatureEditor,
+  saveGalleryState,
+  type GalleryEditorState,
+} from './views/SignatureEditor';
 import { isLocalDevMode } from './localData';
 import { collectMediaPool } from './mediaPool';
-import { loadJson } from '../lib/dataLoader';
-import type { GalleryData } from '../types';
 
 export async function initAdminApp(root: HTMLElement): Promise<void> {
   const boot = () => void bootApp(root);
@@ -46,13 +50,17 @@ async function bootApp(root: HTMLElement): Promise<void> {
 
   let menuState: MenuEditorState;
   let storeState: StoreEditorState;
+  let galleryState: GalleryEditorState;
   let mediaPool: string[];
   let dirty = false;
 
   try {
-    const gallery = await loadJson<GalleryData>('/data/gallery.json');
-    [menuState, storeState] = await Promise.all([loadMenuState(), loadStoreState()]);
-    mediaPool = collectMediaPool(gallery, menuState.menu);
+    [menuState, storeState, galleryState] = await Promise.all([
+      loadMenuState(),
+      loadStoreState(),
+      loadGalleryState(),
+    ]);
+    mediaPool = collectMediaPool(galleryState.gallery, menuState.menu);
   } catch (e) {
     root.innerHTML = `<p class="admin-error">${e instanceof Error ? e.message : '로드 실패'}</p>`;
     return;
@@ -65,6 +73,7 @@ async function bootApp(root: HTMLElement): Promise<void> {
   tabs.className = 'admin-tabs';
   tabs.innerHTML = `
     <button type="button" class="admin-tabs__btn admin-tabs__btn--active" data-tab="menu">메뉴</button>
+    <button type="button" class="admin-tabs__btn" data-tab="signature">시그니처</button>
     <button type="button" class="admin-tabs__btn" data-tab="store">매장</button>
   `;
 
@@ -72,10 +81,12 @@ async function bootApp(root: HTMLElement): Promise<void> {
   content.className = 'admin-content';
 
   const menuEl = renderMenuEditor(menuState, mediaPool, () => { dirty = true; });
+  const signatureEl = renderSignatureEditor(galleryState, mediaPool, () => { dirty = true; });
   const storeEl = renderStoreEditor(storeState, () => { dirty = true; });
+  signatureEl.hidden = true;
   storeEl.hidden = true;
 
-  content.append(menuEl, storeEl);
+  content.append(menuEl, signatureEl, storeEl);
 
   const saveBar = document.createElement('div');
   saveBar.className = 'admin-save-bar';
@@ -93,6 +104,7 @@ async function bootApp(root: HTMLElement): Promise<void> {
     msg.hidden = true;
     try {
       await saveMenuState(menuState);
+      await saveGalleryState(galleryState);
       await saveStoreState(storeState);
       dirty = false;
       msg.textContent = isLocalDevMode()
@@ -116,6 +128,7 @@ async function bootApp(root: HTMLElement): Promise<void> {
       btn.classList.add('admin-tabs__btn--active');
       const tab = btn.dataset.tab;
       menuEl.hidden = tab !== 'menu';
+      signatureEl.hidden = tab !== 'signature';
       storeEl.hidden = tab !== 'store';
     });
   });
