@@ -41,37 +41,37 @@
           "id": "eel-soup",
           "name": "장어탕 1인분",
           "price": 9000,
-          "image": "media/KakaoTalk_20260615_151043674_10.webp"
+          "image": "media/menu-eel-soup-1781521420602.webp"
         },
         {
           "id": "catfish-noodles",
           "name": "메기칼국수 1인분",
           "price": 9000,
-          "image": "media/KakaoTalk_20260615_151043674_01.webp"
+          "image": "media/KakaoTalk_20260615_151043674_09.webp"
         },
         {
           "id": "maesaengi-noodles",
           "name": "매생이국수 1인분",
           "price": 6000,
-          "image": "media/KakaoTalk_20260615_151043674_11.webp"
+          "image": "media/menu-maesaengi-noodles-1781521433771.webp"
         },
         {
           "id": "naengmyeon",
           "name": "냉면",
           "price": 5000,
-          "image": null
+          "image": "media/menu-naengmyeon-1781521443514.webp"
         },
         {
           "id": "doenjang",
           "name": "된장찌개 1인분",
           "price": 2000,
-          "image": null
+          "image": "media/menu-doenjang-1781521450438.webp"
         },
         {
           "id": "rice",
           "name": "공기밥",
           "price": 1000,
-          "image": null
+          "image": "media/menu-rice-1781521458455.webp"
         }
       ]
     },
@@ -79,12 +79,42 @@
       "id": "drinks",
       "name": "주류",
       "items": [
-        { "id": "soju", "name": "소주", "price": 4000, "image": null },
-        { "id": "beer", "name": "맥주", "price": 5000, "image": null },
-        { "id": "bokbunja", "name": "복분자", "price": 13000, "image": null },
-        { "id": "cheongha", "name": "청하", "price": 6000, "image": null },
-        { "id": "baekseju", "name": "백세주", "price": 8000, "image": null },
-        { "id": "soft-drink", "name": "음료수", "price": 2000, "image": null }
+        {
+          "id": "soju",
+          "name": "소주",
+          "price": 4000,
+          "image": null
+        },
+        {
+          "id": "beer",
+          "name": "맥주",
+          "price": 5000,
+          "image": null
+        },
+        {
+          "id": "bokbunja",
+          "name": "복분자",
+          "price": 13000,
+          "image": null
+        },
+        {
+          "id": "cheongha",
+          "name": "청하",
+          "price": 6000,
+          "image": null
+        },
+        {
+          "id": "baekseju",
+          "name": "백세주",
+          "price": 8000,
+          "image": null
+        },
+        {
+          "id": "soft-drink",
+          "name": "음료수",
+          "price": 2000,
+          "image": null
+        }
       ]
     }
   ]
