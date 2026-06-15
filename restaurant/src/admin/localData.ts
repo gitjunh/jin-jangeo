@@ -1,5 +1,5 @@
-import type { RestaurantInfo } from '../../types';
-import type { MenuData } from '../../types';
+import type { RestaurantInfo } from '../types';
+import type { MenuData } from '../types';
 
 const KEY_MENU = 'jin_dev_menu';
 const KEY_RESTAURANT = 'jin_dev_restaurant';
