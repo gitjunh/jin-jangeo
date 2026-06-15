@@ -35,18 +35,16 @@ jobs:
           VITE_GITHUB_BRANCH: gh-pages
         run: npm ci && npm run build
 
-      - name: Merge admin data from gh-pages
+      - name: Verify data JSON before deploy
         run: |
-          git fetch origin gh-pages --depth=1 2>/dev/null || true
           for f in menu.json gallery.json restaurant.json videos.json; do
-            if git show origin/gh-pages:data/"$f" > /tmp/gh-"$f" 2>/dev/null; then
-              if [ -s /tmp/gh-"$f" ]; then
-                cp /tmp/gh-"$f" restaurant/dist/data/"$f"
-                echo "Using gh-pages data/$f"
-              else
-                echo "Skip empty gh-pages data/$f"
-              fi
+            fpath="restaurant/dist/data/$f"
+            if [ ! -s "$fpath" ]; then
+              echo "::error::data/$f is empty — copying from public/"
+              cp "restaurant/public/data/$f" "$fpath"
             fi
+            node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" "$fpath"
+            echo "OK data/$f ($(wc -c < "$fpath") bytes)"
           done
 
       - name: Deploy to gh-pages
