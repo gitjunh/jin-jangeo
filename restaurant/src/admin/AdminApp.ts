@@ -17,6 +17,9 @@ import {
   type StoreEditorState,
 } from './views/StoreEditor';
 import { isLocalDevMode } from './localData';
+import { collectMediaPool } from './mediaPool';
+import { loadJson } from '../lib/dataLoader';
+import type { GalleryData } from '../types';
 
 export async function initAdminApp(root: HTMLElement): Promise<void> {
   const boot = () => void bootApp(root);
@@ -43,10 +46,13 @@ async function bootApp(root: HTMLElement): Promise<void> {
 
   let menuState: MenuEditorState;
   let storeState: StoreEditorState;
+  let mediaPool: string[];
   let dirty = false;
 
   try {
+    const gallery = await loadJson<GalleryData>('/data/gallery.json');
     [menuState, storeState] = await Promise.all([loadMenuState(), loadStoreState()]);
+    mediaPool = collectMediaPool(gallery, menuState.menu);
   } catch (e) {
     root.innerHTML = `<p class="admin-error">${e instanceof Error ? e.message : '로드 실패'}</p>`;
     return;
@@ -65,7 +71,7 @@ async function bootApp(root: HTMLElement): Promise<void> {
   const content = document.createElement('div');
   content.className = 'admin-content';
 
-  const menuEl = renderMenuEditor(menuState, () => { dirty = true; });
+  const menuEl = renderMenuEditor(menuState, mediaPool, () => { dirty = true; });
   const storeEl = renderStoreEditor(storeState, () => { dirty = true; });
   storeEl.hidden = true;
 

@@ -4,6 +4,7 @@ import { optimizeImage } from '@shared/media';
 import { getFile, loadJsonFromGh, putBinary, putJson } from '../github';
 import { isLocalDevMode, saveLocalMenu } from '../localData';
 import { publicUrl } from '../../lib/assets';
+import { openPhotoPicker } from './PhotoPicker';
 
 export interface MenuEditorState {
   menu: MenuData;
@@ -23,6 +24,7 @@ export async function loadMenuState(): Promise<MenuEditorState> {
 
 export function renderMenuEditor(
   state: MenuEditorState,
+  mediaPool: string[],
   onChange: () => void,
 ): HTMLElement {
   const el = document.createElement('div');
@@ -78,29 +80,33 @@ export function renderMenuEditor(
     el.querySelectorAll<HTMLButtonElement>('[data-photo]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const { catId, itemId } = btn.dataset;
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.capture = 'environment';
-        input.addEventListener('change', async () => {
-          const file = input.files?.[0];
-          if (!file) return;
-          const item = findItem(state.menu, catId!, itemId!);
-          if (!item) return;
-          btn.textContent = '최적화 중…';
-          try {
-            const { blob } = await optimizeImage(file);
-            const path = `media/menu-${itemId}-${Date.now()}.webp`;
-            state.pendingImages.set(itemId!, { blob, path });
+        openPhotoPicker({
+          images: mediaPool,
+          onSelectExisting: (path) => {
+            const item = findItem(state.menu, catId!, itemId!);
+            if (!item) return;
+            state.pendingImages.delete(itemId!);
             item.image = path;
             onChange();
             render();
-          } catch (e) {
-            alert(e instanceof Error ? e.message : '이미지 변환 실패');
-            btn.textContent = '사진 바꾸기';
-          }
+          },
+          onSelectFile: async (file) => {
+            const item = findItem(state.menu, catId!, itemId!);
+            if (!item) return;
+            btn.textContent = '최적화 중…';
+            try {
+              const { blob } = await optimizeImage(file);
+              const path = `media/menu-${itemId}-${Date.now()}.webp`;
+              state.pendingImages.set(itemId!, { blob, path });
+              item.image = path;
+              onChange();
+              render();
+            } catch (e) {
+              alert(e instanceof Error ? e.message : '이미지 변환 실패');
+              btn.textContent = '사진 바꾸기';
+            }
+          },
         });
-        input.click();
       });
     });
 
