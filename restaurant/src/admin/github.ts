@@ -28,16 +28,30 @@ async function parseError(res: Response): Promise<string> {
   }
 }
 
+function decodeBase64Utf8(base64: string): string {
+  const binary = atob(base64.replace(/\s/g, ''));
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(bytes);
+}
+
+function encodeBase64Utf8(text: string): string {
+  const bytes = new TextEncoder().encode(text);
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]!);
+  return btoa(binary);
+}
+
 export async function getFile(path: string): Promise<GhFile | null> {
   const res = await fetch(`${contentsUrl(path)}?ref=${GITHUB_BRANCH}`, { headers: headers() });
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(await parseError(res));
   const data = await res.json() as { sha: string; content: string };
-  return { sha: data.sha, content: atob(data.content.replace(/\n/g, '')) };
+  return { sha: data.sha, content: decodeBase64Utf8(data.content) };
 }
 
 export async function putJson(path: string, data: unknown, sha?: string): Promise<void> {
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  const content = encodeBase64Utf8(JSON.stringify(data, null, 2));
   await putRaw(path, content, sha);
 }
 

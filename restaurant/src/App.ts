@@ -6,6 +6,7 @@ import { renderSignatureScroll } from './sections/SignatureScroll';
 import { renderMenuSection } from './sections/MenuSection';
 import { createLightbox, renderGalleryGrid } from './sections/GalleryGrid';
 import { renderStoreInfo } from './sections/StoreInfo';
+import { initBgm } from './lib/bgm';
 
 export async function initApp(root: HTMLElement): Promise<void> {
   root.innerHTML = '<p class="loading">불러오는 중…</p>';
@@ -33,4 +34,5 @@ export async function initApp(root: HTMLElement): Promise<void> {
   );
 
   root.append(main, renderStickyCta(info, () => openHoursSheet(hoursSheet)), hoursSheet, lightbox);
+  initBgm();
 }
