@@ -39,8 +39,13 @@ jobs:
         run: |
           git fetch origin gh-pages --depth=1 2>/dev/null || true
           for f in menu.json gallery.json restaurant.json videos.json; do
-            if git show origin/gh-pages:data/"$f" > restaurant/dist/data/"$f" 2>/dev/null; then
-              echo "Using gh-pages data/$f"
+            if git show origin/gh-pages:data/"$f" > /tmp/gh-"$f" 2>/dev/null; then
+              if [ -s /tmp/gh-"$f" ]; then
+                cp /tmp/gh-"$f" restaurant/dist/data/"$f"
+                echo "Using gh-pages data/$f"
+              else
+                echo "Skip empty gh-pages data/$f"
+              fi
             fi
           done
 
