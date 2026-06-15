@@ -23,8 +23,9 @@ export default defineConfig({
   },
   plugins: [
     VitePWA({
+      base,
       registerType: 'autoUpdate',
-      includeAssets: ['media/**/*', 'icons/*', 'data/**/*'],
+      includeAssets: ['icons/*'],
       manifest: {
         name: '장어명가 진',
         short_name: '장어명가진',
@@ -40,12 +41,17 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,webp,svg,woff2,mp3}'],
-        globIgnores: ['**/data/**'],
+        globPatterns: ['**/*.{js,css,html,ico,svg,woff2}'],
+        globIgnores: ['**/data/**', '**/media/**'],
+        navigateFallback: `${base}index.html`,
         maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
         runtimeCaching: [
           {
             urlPattern: new RegExp(`${base.replace(/\//g, '\\/')}data\\/.*\\.json$`),
+            handler: 'NetworkOnly',
+          },
+          {
+            urlPattern: new RegExp(`${base.replace(/\//g, '\\/')}media\\/.*`),
             handler: 'NetworkOnly',
           },
         ],
