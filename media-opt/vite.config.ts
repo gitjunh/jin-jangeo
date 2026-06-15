@@ -1,8 +1,12 @@
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { resolve } from 'path';
 
 export default defineConfig({
   base: '/',
+  resolve: {
+    alias: { '@shared/media': resolve(__dirname, '../shared/media/index.ts') },
+  },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
@@ -38,6 +42,8 @@ export default defineConfig({
     exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util'],
   },
   server: {
+    port: 5180,
+    strictPort: true,
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'require-corp',

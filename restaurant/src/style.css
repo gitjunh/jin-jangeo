@@ -450,6 +450,12 @@ body.lightbox-open {
   object-fit: contain;
 }
 
+.loading {
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--color-text-muted);
+}
+
 @media (min-width: 481px) {
   .page {
     max-width: 480px;

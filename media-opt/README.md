@@ -15,7 +15,7 @@
 ```bash
 npm install
 npm test          # 단위 테스트
-npm run dev       # http://localhost:5173
+npm run dev       # http://localhost:5180 (restaurant 어드민은 5173)
 npm run build     # 프로덕션 빌드 확인
 npm run preview   # 빌드 결과 로컬 미리보기
 ```

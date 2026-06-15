@@ -13,7 +13,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@shared/media": ["../shared/media/index.ts"]
+    }
   },
   "include": ["src"]
 }

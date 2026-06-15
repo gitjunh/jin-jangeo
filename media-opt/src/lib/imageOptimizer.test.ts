@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { calcScaledSize } from './imageOptimizer';
+import { calcScaledSize } from '@shared/media';
 
 describe('calcScaledSize', () => {
   it('returns original size when within max width', () => {

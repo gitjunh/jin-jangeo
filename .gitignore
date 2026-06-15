@@ -5,3 +5,6 @@ dist/
 .vite
 .env
 .env.*
+
+# 최적화 전 원본 (로컬 임시)
+res/

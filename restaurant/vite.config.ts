@@ -1,12 +1,28 @@
+import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: '/',
+  server: {
+    port: 5173,
+    strictPort: true,
+  },
+  resolve: {
+    alias: { '@shared/media': resolve(__dirname, '../shared/media/index.ts') },
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        admin: resolve(__dirname, 'admin.html'),
+      },
+    },
+  },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['media/**/*', 'icons/*'],
+      includeAssets: ['media/**/*', 'icons/*', 'data/**/*'],
       manifest: {
         name: '장어명가 진',
         short_name: '장어명가진',
@@ -23,7 +39,14 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,webp,svg,woff2}'],
+        globIgnores: ['**/data/**'],
         maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
+        runtimeCaching: [
+          {
+            urlPattern: /\/data\/.*\.json$/,
+            handler: 'NetworkOnly',
+          },
+        ],
       },
     }),
   ],
